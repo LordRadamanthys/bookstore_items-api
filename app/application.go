@@ -3,9 +3,12 @@ package app
 import (
 	"net/http"
 	"time"
+
+	"github.com/bookstore_items-api/clients/elasticsearch"
 )
 
 func StartApplication() {
+	elasticsearch.Init()
 	MapUrls()
 
 	server := &http.Server{
