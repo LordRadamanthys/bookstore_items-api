@@ -2,7 +2,7 @@ module github.com/bookstore_items-api
 
 go 1.17
 
-require github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220131012342-90468be56c77
+require github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220206030734-c0d3e74e06f1
 
 require (
 	github.com/Bookstore-GolangMS/bookstore_oauth-go v0.0.0-20210823193118-14764edf1796 // indirect
@@ -16,4 +16,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.20.0 // indirect
 )

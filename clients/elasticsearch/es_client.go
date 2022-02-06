@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/LordRadamanthys/bookstore_utils-go/logger"
 	"github.com/olivere/elastic/v7"
 )
 
@@ -17,17 +18,19 @@ type esClientStruct struct {
 
 type esClientInterface interface {
 	setClient(c *elastic.Client)
-	Index(interface{}) (*elastic.IndexResponse, error)
+	Index(string, interface{}) (*elastic.IndexResponse, error)
 }
 
 func Init() {
 
 	var err error
+	log := logger.GetLogger()
 	client, err := elastic.NewClient(
 		elastic.SetURL("http://127.0.0.1:9200"),
+		elastic.SetSniff(false),
 		elastic.SetHealthcheckInterval(10*time.Second),
-		// elastic.SetErrorLog(),
-		// elastic.SetInfoLog(),
+		elastic.SetErrorLog(log),
+		elastic.SetInfoLog(log),
 	)
 
 	if err != nil {
@@ -37,11 +40,17 @@ func Init() {
 	Client.setClient(client)
 }
 
-func (c esClientStruct) Index(obj interface{}) (*elastic.IndexResponse, error) {
+func (c *esClientStruct) Index(index string, obj interface{}) (*elastic.IndexResponse, error) {
 	ctx := context.Background()
-	return c.client.Index().Do(ctx)
+	result, err := c.client.Index().Index(index).BodyJson(obj).Do(ctx)
+
+	if err != nil {
+		logger.Error("error when trying to index document in elasticSearch", err)
+		return nil, err
+	}
+	return result, nil
 }
 
-func (c esClientStruct) setClient(client *elastic.Client) {
+func (c *esClientStruct) setClient(client *elastic.Client) {
 	c.client = client
 }
