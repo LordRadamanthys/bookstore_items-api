@@ -1,8 +1,6 @@
 package services
 
 import (
-	"net/http"
-
 	"github.com/LordRadamanthys/bookstore_utils-go/rest_errors"
 	"github.com/bookstore_items-api/domain/items"
 )
@@ -12,13 +10,13 @@ var (
 )
 
 type itemsServiceInterface interface {
-	Create(items.Item) (*items.Item, *rest_errors.RestErr)
+	Create(items.Item) (*items.Item, rest_errors.RestErr)
 	Get(string) (*items.Item, rest_errors.RestErr)
 }
 
 type itemsService struct{}
 
-func (s *itemsService) Create(item items.Item) (*items.Item, *rest_errors.RestErr) {
+func (s *itemsService) Create(item items.Item) (*items.Item, rest_errors.RestErr) {
 
 	if err := item.Save(); err != nil {
 		return nil, err
@@ -27,10 +25,10 @@ func (s *itemsService) Create(item items.Item) (*items.Item, *rest_errors.RestEr
 }
 
 func (s *itemsService) Get(id string) (*items.Item, rest_errors.RestErr) {
-	return nil, rest_errors.RestErr{
-		Message: "Not implemmented",
-		Status:  http.StatusNotImplemented,
-		Error:   "",
-		Causes:  nil,
+	item := items.Item{Id: id}
+
+	if err := item.Get(); err != nil {
+		return nil, err
 	}
+	return &item, nil
 }

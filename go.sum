@@ -6,6 +6,8 @@ github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220131012342-90468be56c77
 github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220131012342-90468be56c77/go.mod h1:yRFj5BIsUfcWG1KV+0JlX+NWuMKeA9xNMWZVjb/4u7Y=
 github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220206030734-c0d3e74e06f1 h1:N9fFQL1Fk7bH4DpX36dlAN5nFtv7H1dgO4HdjLhBInw=
 github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220206030734-c0d3e74e06f1/go.mod h1:ioC2zPfV7lcdO4uKVmU/vSb7q9JDSFCufGICl7oCo9Y=
+github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220208023731-bf8a681022af h1:ZmTcp7GaO/qbaURUHo8gb3NnlE08ltEqhzpnRPgft+c=
+github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220208023731-bf8a681022af/go.mod h1:ioC2zPfV7lcdO4uKVmU/vSb7q9JDSFCufGICl7oCo9Y=
 github.com/aws/aws-sdk-go v1.42.23/go.mod h1:gyRszuZ/icHmHAVE4gc/r+cfCmhA1AD+vqfWbgI+eHs=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

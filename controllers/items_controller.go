@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/Bookstore-GolangMS/bookstore_oauth-go/oauth"
 	"github.com/LordRadamanthys/bookstore_utils-go/rest_errors"
 	"github.com/bookstore_items-api/domain/items"
 	"github.com/bookstore_items-api/services"
 	"github.com/bookstore_items-api/utils/http_utils"
+	"github.com/gorilla/mux"
 )
 
 var (
@@ -25,30 +27,31 @@ type itemsControllerStruct struct{}
 
 func (c *itemsControllerStruct) Create(w http.ResponseWriter, r *http.Request) {
 	if err := oauth.AuthenticateRequest(r); err != nil {
-		http_utils.RespondError(w, rest_errors.RestErr{})
+		restError := rest_errors.NewUnauthorizedError("unauthorized")
+		http_utils.RespondError(w, restError)
 		return
 	}
 
 	//change to unauthorized
 	seller := oauth.GetCallerId(r)
 	if seller == 0 {
-		restError := rest_errors.BadRequestError("unauthorized", nil)
-		http_utils.RespondError(w, *restError)
+		restError := rest_errors.NewBadRequestError("unauthorized")
+		http_utils.RespondError(w, restError)
 		return
 	}
 
 	var itemRequest items.Item
 	requestBody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		restError := rest_errors.BadRequestError("invalid request body", err)
-		http_utils.RespondError(w, *restError)
+		restError := rest_errors.NewBadRequestError("invalid request body")
+		http_utils.RespondError(w, restError)
 		return
 	}
 	defer r.Body.Close()
 
 	if err := json.Unmarshal(requestBody, &itemRequest); err != nil {
-		restError := rest_errors.BadRequestError("invalid json body", err)
-		http_utils.RespondError(w, *restError)
+		restError := rest_errors.NewBadRequestError("invalid json body")
+		http_utils.RespondError(w, restError)
 		return
 	}
 
@@ -56,7 +59,7 @@ func (c *itemsControllerStruct) Create(w http.ResponseWriter, r *http.Request) {
 	result, createErr := services.ItemsService.Create(itemRequest)
 
 	if createErr != nil {
-		http_utils.RespondError(w, *createErr)
+		http_utils.RespondError(w, createErr)
 		return
 	}
 
@@ -64,5 +67,14 @@ func (c *itemsControllerStruct) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *itemsControllerStruct) Get(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
 
+	itemId := strings.TrimSpace(vars["id"])
+
+	item, err := services.ItemsService.Get(itemId)
+	if err != nil {
+		http_utils.RespondError(w, err)
+		return
+	}
+	http_utils.RespondJson(w, http.StatusOK, item)
 }

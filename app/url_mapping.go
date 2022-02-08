@@ -14,4 +14,5 @@ var (
 func MapUrls() {
 	router.HandleFunc("/items", controllers.ItemsController.Create).Methods(http.MethodPost)
 	router.HandleFunc("/ping", controllers.PinController.Ping).Methods(http.MethodGet)
+	router.HandleFunc("/items/{id}", controllers.ItemsController.Get).Methods(http.MethodGet)
 }

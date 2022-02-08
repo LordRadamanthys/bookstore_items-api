@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -18,6 +19,7 @@ func StartApplication() {
 		ReadTimeout:  15 * time.Second,
 	}
 
+	fmt.Println("running at port :8083")
 	if err := server.ListenAndServe(); err != nil {
 		panic(err)
 	}

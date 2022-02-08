@@ -2,7 +2,7 @@ module github.com/bookstore_items-api
 
 go 1.17
 
-require github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220206030734-c0d3e74e06f1
+require github.com/LordRadamanthys/bookstore_utils-go v0.0.0-20220208023731-bf8a681022af
 
 require (
 	github.com/Bookstore-GolangMS/bookstore_oauth-go v0.0.0-20210823193118-14764edf1796 // indirect
