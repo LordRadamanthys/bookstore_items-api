@@ -9,6 +9,7 @@ import (
 	"github.com/Bookstore-GolangMS/bookstore_oauth-go/oauth"
 	"github.com/LordRadamanthys/bookstore_utils-go/rest_errors"
 	"github.com/bookstore_items-api/domain/items"
+	"github.com/bookstore_items-api/domain/queries"
 	"github.com/bookstore_items-api/services"
 	"github.com/bookstore_items-api/utils/http_utils"
 	"github.com/gorilla/mux"
@@ -77,4 +78,29 @@ func (c *itemsControllerStruct) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http_utils.RespondJson(w, http.StatusOK, item)
+}
+
+func (c *itemsControllerStruct) Search(w http.ResponseWriter, r *http.Request) {
+
+	bytes, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		apiErr := rest_errors.NewBadRequestError("ivalid json body")
+		http_utils.RespondError(w, apiErr)
+		return
+	}
+	defer r.Body.Close()
+
+	var query queries.EsQuery
+	if err := json.Unmarshal(bytes, &query); err != nil {
+		apiErr := rest_errors.NewBadRequestError("invalid json body")
+		http_utils.RespondError(w, apiErr)
+		return
+	}
+
+	items, searchErr := services.ItemsService.Search(query)
+	if err != nil {
+		http_utils.RespondError(w, searchErr)
+		return
+	}
+	http_utils.RespondJson(w, http.StatusOK, items)
 }

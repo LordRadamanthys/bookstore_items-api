@@ -7,6 +7,7 @@ import (
 
 	"github.com/LordRadamanthys/bookstore_utils-go/rest_errors"
 	"github.com/bookstore_items-api/clients/elasticsearch"
+	"github.com/bookstore_items-api/domain/queries"
 )
 
 const (
@@ -43,4 +44,13 @@ func (i *Item) Get() rest_errors.RestErr {
 	i.Id = itemId
 	fmt.Println(result.Source)
 	return nil
+}
+
+func (i *Item) Search(query queries.EsQuery) ([]Item, rest_errors.RestErr) {
+	result, err := elasticsearch.Client.Search(indexItems, query.Build())
+	if err != nil {
+		return nil, rest_errors.NewInternalServerError("error when trying to search documents", errors.New("database error"))
+	}
+	fmt.Print(result)
+	return nil, nil
 }
