@@ -52,5 +52,18 @@ func (i *Item) Search(query queries.EsQuery) ([]Item, rest_errors.RestErr) {
 		return nil, rest_errors.NewInternalServerError("error when trying to search documents", errors.New("database error"))
 	}
 	fmt.Print(result)
-	return nil, nil
+	items := make([]Item, result.TotalHits())
+	for index, hit := range result.Hits.Hits {
+		bytes, _ := hit.Source.MarshalJSON()
+		var item Item
+		if err := json.Unmarshal(bytes, &item); err != nil {
+			return nil, rest_errors.NewInternalServerError("error when trying to parse", errors.New("database error"))
+		}
+		item.Id = hit.Id
+		items[index] = item
+	}
+	if len(items) == 0 {
+		return nil, rest_errors.NewNotFoundError("items not found")
+	}
+	return items, nil
 }
