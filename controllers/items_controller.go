@@ -23,6 +23,7 @@ type itemsControllerInterface interface {
 	Create(w http.ResponseWriter, r *http.Request)
 	Get(w http.ResponseWriter, r *http.Request)
 	Search(w http.ResponseWriter, r *http.Request)
+	Delete(w http.ResponseWriter, r *http.Request)
 }
 
 type itemsControllerStruct struct{}
@@ -104,4 +105,17 @@ func (c *itemsControllerStruct) Search(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http_utils.RespondJson(w, http.StatusOK, items)
+}
+
+func (c *itemsControllerStruct) Delete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+
+	itemId := strings.TrimSpace(vars["id"])
+
+	item, err := services.ItemsService.Delete(itemId)
+	if err != nil {
+		http_utils.RespondError(w, err)
+		return
+	}
+	http_utils.RespondJson(w, http.StatusOK, item)
 }

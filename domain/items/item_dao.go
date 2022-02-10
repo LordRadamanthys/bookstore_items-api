@@ -67,3 +67,13 @@ func (i *Item) Search(query queries.EsQuery) ([]Item, rest_errors.RestErr) {
 	}
 	return items, nil
 }
+
+func (i *Item) Delete(id string) (string, rest_errors.RestErr) {
+	result, err := elasticsearch.Client.Delete(indexItems, typeItem, id)
+	if err != nil {
+		return "", rest_errors.NewInternalServerError("error when trying to delete documents", errors.New("database error"))
+	}
+	fmt.Print(result)
+
+	return "foi", nil
+}
